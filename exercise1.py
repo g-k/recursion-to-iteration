@@ -30,23 +30,27 @@ class BSTNode(object):
     def __repr__(self):
         return '(%s, %r, %r)' % (self.val, self.left, self.right)
 
+
 def find_val_or_next_smallest(bst, x):
     """Get the greatest value <= x in a binary search tree.
 
     Returns None if no such value can be found.
 
     """
-    if bst is None:
-        return None
-    elif bst.val == x:
-        return x
-    elif bst.val > x:
-        return find_val_or_next_smallest(bst.left, x)
-    else:
-        right_best = find_val_or_next_smallest(bst.right, x)
-        if right_best is None:
-            return bst.val
-        return right_best
+    while True:
+        if bst is None:
+            return None
+        elif bst.val == x:
+            return x
+        elif bst.val > x:
+            bst = bst.left
+            continue
+        else:
+            right_best = find_val_or_next_smallest(bst.right, x)
+            if right_best is None:
+                return bst.val
+            return right_best
+        break
 
 
 # tests
@@ -73,3 +77,7 @@ def test():
                 if y != x:
                     i = bisect.bisect_right(vals, x)
                     assert all(x < z for z in vals[i:])
+
+
+if __name__ == '__main__':
+    test()
